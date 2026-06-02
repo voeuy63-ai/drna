@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ឌីណា-Store | ទំនុកចិត្ត និងទំនួលខុសត្រូវ</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        /* កំណត់ Font និងស្ទីលទូទៅ */
+        @import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kantumruy Pro', sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #2d3748;
+            overflow-x: hidden;
+        }
+
+        /* -----------------------------------------
+           1. ផ្នែក LOADING ANIMATION ជាមួយ LOGO ពិត
+        ----------------------------------------- */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0d0e12; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .neon-loader-box {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ដាក់រូបភាព Logo ពិតចូលក្នុង Background loading */
+        .logo-bg-loading {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            background-image: url('https://i.ibb.co/tdKBwx4/IMG-20260531-204546.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #ffffff; /* ថែមផ្ទៃសពីក្រោយដើម្បីឱ្យលេចធ្លោ */
+            border-radius: 50%;
+            padding: 5px;
+            box-shadow: 0 0 25px rgba(255, 23, 68, 0.4);
+        }
+
+        /* រង្វង់ពន្លឺវិលជុំវិញ Logo */
+        .neon-ring {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 4px solid transparent;
+            border-top: 4px solid #ff1744;
+            border-right: 4px solid #2979ff;
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+            filter: drop-shadow(0 0 12px #ff1744);
+        }
+
+        .loading-text {
+            margin-top: 25px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #ff1744, 0 0 30px #2979ff;
+            animation: pulseGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        .loading-sub {
+            font-size: 0.85rem;
+            color: #a4b0be;
+            margin-top: 8px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* -----------------------------------------
+           2. ផ្នែកមាតិកា (Main Website Content)
+        ----------------------------------------- */
+        header {
+            background-color: #ffffff;
+            padding: 12px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        /* បញ្ចូល Logo ពិតទៅក្នុង Header */
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: contain;
+            background-color: #fff;
+            border: 2px solid #ff1744;
+        }
+
+        .logo-text-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ff1744;
+            text-transform: uppercase;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #4a5568;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        nav a:hover {
+            color: #ff1744;
+        }
+
+        .hero {
+            height: 65vh;
+            background: linear-gradient(rgba(13, 14, 18, 0.7), rgba(13, 14, 18, 0.7)), url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 35px;
+            max-width: 650px;
+            color: #e2e8f0;
+            line-height: 1.8;
+        }
+
+        .btn-shop:hover {
+            background-color: #d50000;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(255, 23, 68, 0.5);
+        }
+
+        .features {
+            padding: 80px 10%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border: 1px solid #edf2f7;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border-color: rgba(255, 23, 68, 0.2);
+        }
+
+        .card .icon-box {
+            width: 80px;
+            height: 80px;
+            background-color: #fff5f5;
+            color: #ff1744;
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 25px auto;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .icon-box {
+            background-color: #ff1744;
+            color: white;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            color: #1a202c;
+            font-weight: 700;
+        }
+
+        .card p {
+            color: #718096;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        footer {
+            background-color: #1a202c;
+            color: #a0aec0;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.95rem;
+            border-top: 4px solid #ff1744;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+            nav a {
+                margin: 0 10px;
+            }
+            .hero h1 { font-size: 2.2rem; }
+            .features { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-overlay">
+        <div class="loader-container">
+            <div class="neon-loader-box">
+                <div class="neon-ring"></div>
+                <div class="logo-bg-loading"></div>
+            </div>
+            <div class="loading-text">ឌីណា-STORE</div>
+            <div class="loading-sub">LOADING...</div>
+        </div>
+    </div>
+
+    <header>
+        <a href="#" class="logo-wrapper">
+            <img class="logo-img" src="https://i.ibb.co/tdKBwx4/IMG-20260531-204546.png" alt="ឌីណា-Store Logo">
+            <span class="logo-text-brand">ឌីណា-Store</span>
+        </a>
+        <nav>
+            <a href="#"></a>
+            <a href="#"></a>
+            <a href="#"></a>
+            <a href="#"></a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>ទិញទំនិញដោយទំនុកចិត្ត</h1>
+        <p>ឌីណា-Store ជាហាងអនឡាញដែលមានទំនួលខុសត្រូវខ្ពស់ រាល់ផលិតផលសុទ្ធតែមានគុណភាព និងការធានាច្បាស់លាស់។</p>
+        <a href="#" class="btn-shop">
+          
+        </a>
+    </section>
+
+    <section class="features">
+        <div class="card">
+            <div class="icon-box">
+                <i class="fa-solid fa-handshake-angle"></i>
+            </div>
+            <h3>ទំនួលខុសត្រូវខ្ពស់</h3>
+            <p>យើងខ្ញុំធានាជូននូវរាល់ការបាត់បង់ ឬខូចខាតអំឡុងពេលដឹកជញ្ជូន ជូនអតិថិជនឥតគិតថ្លៃ។</p>
+        </div>
+        
+        <div class="card">
+            <div class="icon-box">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3>គុណភាពខ្ពស់</h3>
+            <p>រាល់ទំនិញទាំងអស់ត្រូវបានត្រួតពិនិត្យយ៉ាងត្រឹមត្រូវ និងម៉ត់ចត់បំផុតមុននឹងប្រគល់ជូនអ្នក។</p>
+        </div>
+        
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 MonThai <br></p>
+    </footer>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const intro = document.getElementById('intro-overlay');
+                intro.style.opacity = '0';
+                intro.style.visibility = 'hidden';
+            }, 2800); 
+        });
+    </script>
+</body>
+</html>
